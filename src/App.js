@@ -6,7 +6,7 @@ function App() {
 	const [value2, setValue2] = useState('');
 
 	const result = value.map((elem, index) => {
-		return <li key={index} onClick={() => {ChangeElem(index)}}>{elem} </li>
+		return <li key={index} onClick={() => {RemoveThisElem(index)}}>{elem} </li>
 	})
 
 	function AddElem() {
@@ -16,6 +16,10 @@ function App() {
 		} else {
 			setValue([...value, value.length + 1])
 		}
+	}
+
+	function RemoveThisElem(id) {
+		setValue([...value.slice(0, id), ...value.slice(id + 1)])
 	}
 
 	function RemoveLastElem() {
