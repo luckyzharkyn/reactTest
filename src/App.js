@@ -1,50 +1,28 @@
 import React, { useState } from "react";
 
 function App() {
-	const notes = ['a', 'b', 'c', 'd', 'e'];
-	const [value, setValue] = useState(notes);
-	const [value2, setValue2] = useState('');
+	const mass = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+	const [notes, setNotes] = useState(mass);
 
-	const result = value.map((elem, index) => {
-		return <li key={index} onClick={() => {RemoveThisElem(index)}}>{elem} </li>
+	const result = notes.map((note, index) => {
+		return <p key={index}>{note}</p>
 	})
 
-	function AddElem() {
-		if(value2 != "") {
-			setValue([...value, value2])
-			setValue2("")
-		} else {
-			setValue([...value, value.length + 1])
-		}
+	const inputs = notes.map((note, index) => {
+		return <input key={index} value={note} onChange={(event) => changeInput(index, event.target.value)}/>
+	})
+
+	function changeInput(id, value) {
+		setNotes([...notes.slice(0, id), value, ...notes.slice(id + 1)])
 	}
 
-	function RemoveThisElem(id) {
-		setValue([...value.slice(0, id), ...value.slice(id + 1)])
-	}
-
-	function RemoveLastElem() {
-		let copy = Object.assign([], value);
-		copy.pop()
-		setValue(copy);
-	}
-
-	function ChangeElem(id) {
-		setValue([...value.slice(0, id), "!", ...value.slice(id + 1)])
-	}
-
-	function ReverseMass() {
-		let copy = Object.assign([], value);
-		copy = copy.reverse()
-		setValue(copy)
-	}
-
-	return <div>
-		<ul>{result}</ul>
-		<input value={value2} onChange={(event) => {setValue2(event.target.value)}} onBlur={AddElem}/>
-		<button onClick={AddElem}>add</button>
-		<button onClick={RemoveLastElem}>delete</button>
-		<button onClick={ReverseMass}>reverse</button>
-	</div>
+	return (
+		<div>
+			{result}
+			{inputs}
+		</div>
+	)
+	
 }
 
 
