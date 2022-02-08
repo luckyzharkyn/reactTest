@@ -22,10 +22,17 @@ function App() {
 		setValue([...value.slice(0, id), "!", ...value.slice(id + 1)])
 	}
 
+	function ReverseMass() {
+		let copy = Object.assign([], value);
+		copy = copy.reverse()
+		setValue(copy)
+	}
+
 	return <div>
 		{result}
 		<button onClick={AddElem}>add</button>
 		<button onClick={RemoveLastElem}>delete</button>
+		<button onClick={ReverseMass}>reverse</button>
 	</div>
 }
 
