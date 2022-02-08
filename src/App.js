@@ -12,6 +12,7 @@ function App() {
 	function AddElem() {
 		if(value2 != "") {
 			setValue([...value, value2])
+			setValue2("")
 		} else {
 			setValue([...value, value.length + 1])
 		}
