@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
 function App() {
-
-	const [value, setValue] = useState([1, 2, 3, 4, 5]);
+	const notes = ['a', 'b', 'c', 'd', 'e'];
+	const [value, setValue] = useState(notes);
 	const [value2, setValue2] = useState('');
 
 	const result = value.map((elem, index) => {
-		return <span key={index} onClick={() => {ChangeElem(index)}}>{elem} </span>
+		return <li key={index} onClick={() => {ChangeElem(index)}}>{elem} </li>
 	})
 
 	function AddElem() {
@@ -34,8 +34,8 @@ function App() {
 	}
 
 	return <div>
-		{result}
-		<input value={value2} onChange={(event) => {setValue2(event.target.value)}} />
+		<ul>{result}</ul>
+		<input value={value2} onChange={(event) => {setValue2(event.target.value)}} onBlur={AddElem}/>
 		<button onClick={AddElem}>add</button>
 		<button onClick={RemoveLastElem}>delete</button>
 		<button onClick={ReverseMass}>reverse</button>
