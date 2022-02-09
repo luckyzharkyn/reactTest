@@ -13,10 +13,19 @@ code {
 }
 
 body {
-  color: #fff;
+  font-size: 30px;
+  color: blue;
   background-color: rgb(24, 16, 75);
 }
 
 button{
   display: block;
+}
+span{
+  border: 1px solid black;
+  padding: 30px;
+  background-color: #fff;
+}
+input{
+  font-size: 20px;
 }

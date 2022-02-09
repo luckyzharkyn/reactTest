@@ -1,28 +1,29 @@
 import React, { useState } from "react";
 
 function App() {
-	const mass = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-	const [notes, setNotes] = useState(mass);
+	const [notes, setNotes] = useState(['a', 'b', 'c', 'd', 'e'])
+	const [editNum, setEditNum] = useState(null)
+	const [value, setValue] = useState("")
 
 	const result = notes.map((note, index) => {
-		return <p key={index}>{note}</p>
+		return <li key={index} onClick={() => setEditNum(index)}>{note}</li>
 	})
 
-	const inputs = notes.map((note, index) => {
-		return <input key={index} value={note} onChange={(event) => changeInput(index, event.target.value)}/>
-	})
-
-	function changeInput(id, value) {
-		setNotes([...notes.slice(0, id), value, ...notes.slice(id + 1)])
+	function changeItem(event) {
+		setNotes([...notes.slice(0, editNum), event.target.value, ...notes.slice(editNum + 1)])
 	}
 
-	return (
-		<div>
-			{result}
-			{inputs}
-		</div>
-	)
-	
+	let input;
+	if(editNum) {
+		input = <input value={notes[editNum]} onChange={(event) => {changeItem(event); setValue(event.target.value)} } onBlur={() => {setEditNum(null); }}/>
+	} else {
+		input = <input value={value} onChange={(event) => setValue(event.target.value)} onBlur={() => setNotes([...notes, value])} />
+	}
+
+	return <div>
+		<ul>{result}</ul>
+		{input}
+	</div>
 }
 
 
