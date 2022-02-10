@@ -6,23 +6,36 @@ function App() {
 	const [value, setValue] = useState("")
 
 	const result = notes.map((note, index) => {
-		return <li key={index} onClick={() => setEditNum(index)}>{note}</li>
+		return <li key={index} onClick={() => startEdit(index)}>{note}</li>
 	})
 
-	function changeItem(event) {
-		setNotes([...notes.slice(0, editNum), event.target.value, ...notes.slice(editNum + 1)])
+	function startEdit(index) {
+		setEditNum(index);
+		setValue(notes[index])
 	}
 
-	let input;
-	if(editNum) {
-		input = <input value={notes[editNum]} onChange={(event) => {changeItem(event); setValue(event.target.value)} } onBlur={() => {setEditNum(null); }}/>
-	} else {
-		input = <input value={value} onChange={(event) => setValue(event.target.value)} onBlur={() => setNotes([...notes, value])} />
+	function changeInput(event) {
+		setValue(event.target.value);
+
+		if(editNum) {
+			setNotes([...notes.slice(0, editNum), event.target.value, ...notes.slice(editNum + 1)])
+		}
+	}
+
+	function addItem(event) {
+		if(value != "") {
+			if(editNum) {
+				setEditNum(null)
+			} else {
+				setNotes([...notes, value])
+			}
+			setValue("")
+		}
 	}
 
 	return <div>
-		<ul>{result}</ul>
-		{input}
+		{result}
+		<input value={value} onChange={(event) => changeInput(event)} onBlur={(event) => addItem(event)} />
 	</div>
 }
 
