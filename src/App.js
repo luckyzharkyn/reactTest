@@ -1,25 +1,26 @@
 import React, { useState } from "react";
 
 function App() {
-	const [obj, setObj] = useState({
-		prop1: 'value1',
-		prop2: 'value2',
-		prop3: 'value3'
-	})
 
-	function changeInput(prop, event) {
-		setObj({...obj, ...{[prop]: event.target.value}})
-	}
-
+	const initProds = [
+		{id: 1, name: 'prod1', catg: 'catg1', cost: 100},
+		{id: 2, name: 'prod2', catg: 'catg2', cost: 200},
+		{id: 3, name: 'prod3', catg: 'catg3', cost: 300},
+	];
+	const [notes, setNotes] = useState(initProds);
+	
+	const result = notes.map(note => {
+		return <tr key={note.id}>
+			<td>{note.name}</td>,
+			<td>{note.catg}</td>,
+			<td>{note.cost}</td>,
+		</tr>;
+	});
+		
+	
 	return <div>
-		<input value={obj.prop1} onChange={(event) => changeInput('prop1', event)} />
-		<input value={obj.prop2} onChange={(event) => changeInput('prop2', event)} />
-		<input value={obj.prop3} onChange={(event) => changeInput('prop3', event)} />
-
-		<br />
-
-		{obj.prop1} - {obj.prop2} - {obj.prop3}
-	</div>
+		<table><tbody>{result}</tbody></table>
+	</div>;
 }
 
 
