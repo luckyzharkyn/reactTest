@@ -12,11 +12,17 @@ function App() {
 	const result = notes.map(note => {
 		return <tr key={note.id}>
 			<td>{note.name}</td>,
-			<td>{note.catg}</td>,
+			<td>{note.catg}</td>, 
 			<td>{note.cost}</td>,
+			<td><button onClick={(event) => remItem(note.id)}>delete this</button></td>
 		</tr>;
 	});
-		
+
+	function remItem(id) {
+		setNotes(notes.filter(note => note.id !== id))
+	}
+	
+	
 	
 	return <div>
 		<table><tbody>{result}</tbody></table>
