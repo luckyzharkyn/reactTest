@@ -1,79 +1,34 @@
 import React, { useState } from "react";
+import Product from "./Product";
+import User from "./User";
 
 function App() {
-	let initNotes = [
-		{
-			id: 1,
-			fields: [
-				{name: 'prop1', prop1: 'value11', isEdit: false},
-				{name: 'prop2', prop2: 'value12', isEdit: false},
-				{name: 'prop3', prop3: 'value13', isEdit: false},
-			]
-		},
-		{
-			id: 2,
-			fields: [
-				{name: 'prop1', value: 'value21', isEdit: false},
-				{name: 'prop2', value: 'value22', isEdit: false},
-				{name: 'prop3', value: 'value23', isEdit: false},
-			]
-		},
-		{
-			id: 3,
-			fields: [
-				{name: 'prop1', value: 'value31', isEdit: false},
-				{name: 'prop2', value: 'value32', isEdit: false},
-				{name: 'prop3', value: 'value33', isEdit: false},
-			]
-		},
+	const prods = [
+		{id: 1, name: 'product1', cost: 100},
+		{id: 2, name: 'product2', cost: 200},
+		{id: 3, name: 'product3', cost: 300},
 	];
 
-	const [notes, setNotes] = useState(initNotes);
+	const users = [
+		{id: 4, name: "Zharkyn", surname:"Markabayev", age:"24"},
+		{id: 5, name: "Edil", surname:"Kenesbek", age:"30"},
+		{id: 6, name: "Papa", surname:"Markabayev", age:"50"},
+	];
 
-	const rows = notes.map(note => {
-		const cells = note.fields.map(field => {
-			let elem;
-
-			if(!field.isEdit) {
-				elem = <span onClick={() => chooseEdit(note.id, field.name, true)}>{field.value}</span>
-			} else {
-				elem = <input 
-					value={field.value}
-					onChange={(event) => chooseEdit(note.id, field.name, event.target.value, 'value')}
-					onBlur={() => chooseEdit(note.id, field.name, false)}
-					/>
-			}
-
-			return <td key={field.name}>{elem}</td>
-		})
-
-		return <tr key={note.id}>{cells}</tr>
+	const result = users.map(user => {
+		return <User name={user.name} surname={user.surname} age={user.age} />
 	})
 
-	function chooseEdit(id, name, value, key='isEdit') {
-		setNotes(notes.map(note => {
-			if(note.id === id) {
-				const fields = note.fields.map(field => {
-					if(field.name === name) {
-						return {...field, [key]: value}
-					} else {
-						return field;
-					}
-				})
-				return {id, fields};
-			} else {
-				return note;
-			}
-		}))
-	}
-
 	return <div>
+		{/* <Product name={prods[0].name} cost={prods[0].cost}/>
+		<Product name={prods[1].name} cost={prods[1].cost}/>
+		<Product name={prods[2].name} cost={prods[2].cost}/> */}
+
 		<table>
 			<tbody>
-				{rows}
+				{result}
 			</tbody>
 		</table>
-
 	</div>
 }
 
