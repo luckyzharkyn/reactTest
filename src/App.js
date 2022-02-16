@@ -1,53 +1,100 @@
 import React, { useState } from "react";
 
 function App() {
-	const initNotes = [
-		{	id: 1,
-			text: 'note1',
-			isEdit: false
+	let initNotes = [
+		{
+			id: 1,
+			fields: [
+				{name: 'prop1', prop1: 'value11', isEdit: false},
+				{name: 'prop2', prop2: 'value12', isEdit: false},
+				{name: 'prop3', prop3: 'value13', isEdit: false},
+			]
 		},
-		{	id: 2,
-			text: 'note2',
-			isEdit: false
+		{
+			id: 2,
+			fields: [
+				{name: 'prop1', value: 'value21', isEdit: false},
+				{name: 'prop2', value: 'value22', isEdit: false},
+				{name: 'prop3', value: 'value23', isEdit: false},
+			]
 		},
-		{	id: 3,
-			text: 'note3',
-			isEdit: false
-		}
-	]; 
+		{
+			id: 3,
+			fields: [
+				{name: 'prop1', value: 'value31', isEdit: false},
+				{name: 'prop2', value: 'value32', isEdit: false},
+				{name: 'prop3', value: 'value33', isEdit: false},
+			]
+		},
+	];
 
 	const [notes, setNotes] = useState(initNotes);
 
-	const result = notes.map(note => {
-		let elem;
+	const rows = notes.map(note => {
+		const cells = note.fields.map(field => {
+			let elem;
 
-		if(!note.isEdit) {
-			elem = note.text;
-		} else {
-			elem = <input value={note.text} onChange={(event) => changeText(note.id, event)}/>
-		}
+			if(!field.isEdit) {
+				elem = <span onClick={() => startEdit(note.id, field.name)}>{field.value}</span>
+			} else {
+				elem = <input 
+					value={field.value}
+					onChange={(event) => changeValue(note.id, field.name, event)}
+					onBlur={() => endEdit(note.id, field.name)}
+					/>
+			}
 
-		return <li key={note.id}>{elem}
-		<button onClick={() => startChoose(note.id, note.isEdit)}>{note.isEdit ? "save" : "change"}</button>
-		</li>
-	});
+			return <td key={field.name}>{elem}</td>
+		})
 
-	function changeText(id, event) {
-		changeIsEdit(id, event.target.value, 'text')
-	}
+		return <tr key={note.id}>{cells}</tr>
+	})
 
-	function startChoose(id, isEdit) {
-		if(!isEdit) {
-			changeIsEdit(id, true);
-		} else {
-			changeIsEdit(id, false);
-		}
-	}
-
-	function changeIsEdit(id, value, key='isEdit') {
+	function startEdit(id, name) {
 		setNotes(notes.map(note => {
 			if(note.id === id) {
-				return {...note, [key]: value}
+				const fields = note.fields.map(field => {
+					if(field.name === name) {
+						return {...field, isEdit: true}
+					} else {
+						return field;
+					}
+				})
+				return {id, fields};
+			} else {
+				return note;
+			}
+		}))
+	}
+
+	function changeValue(id, name, event) {
+		setNotes(notes.map(note => {
+			if(note.id === id) {
+				const fields = note.fields.map(field => {
+					if(field.name === name) {
+						return {...field, value: event.target.value};
+					} else {
+						return field;
+					}
+				})
+				return {id, fields}
+			} else {
+				return note;
+			}
+		}))
+	}
+
+	function endEdit(id, name) {
+		setNotes(notes.map(note => {
+			if(note.id === id) {
+				const fields = note.fields.map(field => {
+					if(field.name === name) {
+						return {...field, isEdit: false};
+					} else {
+						return field;
+					}
+				})
+				return {id, fields}
 			} else {
 				return note;
 			}
@@ -55,7 +102,12 @@ function App() {
 	}
 
 	return <div>
-		<ul>{result}</ul>
+		<table>
+			<tbody>
+				{rows}
+			</tbody>
+		</table>
+
 	</div>
 }
 
