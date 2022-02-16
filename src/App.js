@@ -35,12 +35,12 @@ function App() {
 			let elem;
 
 			if(!field.isEdit) {
-				elem = <span onClick={() => startEdit(note.id, field.name)}>{field.value}</span>
+				elem = <span onClick={() => chooseEdit(note.id, field.name, true)}>{field.value}</span>
 			} else {
 				elem = <input 
 					value={field.value}
-					onChange={(event) => changeValue(note.id, field.name, event)}
-					onBlur={() => endEdit(note.id, field.name)}
+					onChange={(event) => chooseEdit(note.id, field.name, event.target.value, 'value')}
+					onBlur={() => chooseEdit(note.id, field.name, false)}
 					/>
 			}
 
@@ -50,51 +50,17 @@ function App() {
 		return <tr key={note.id}>{cells}</tr>
 	})
 
-	function startEdit(id, name) {
+	function chooseEdit(id, name, value, key='isEdit') {
 		setNotes(notes.map(note => {
 			if(note.id === id) {
 				const fields = note.fields.map(field => {
 					if(field.name === name) {
-						return {...field, isEdit: true}
+						return {...field, [key]: value}
 					} else {
 						return field;
 					}
 				})
 				return {id, fields};
-			} else {
-				return note;
-			}
-		}))
-	}
-
-	function changeValue(id, name, event) {
-		setNotes(notes.map(note => {
-			if(note.id === id) {
-				const fields = note.fields.map(field => {
-					if(field.name === name) {
-						return {...field, value: event.target.value};
-					} else {
-						return field;
-					}
-				})
-				return {id, fields}
-			} else {
-				return note;
-			}
-		}))
-	}
-
-	function endEdit(id, name) {
-		setNotes(notes.map(note => {
-			if(note.id === id) {
-				const fields = note.fields.map(field => {
-					if(field.name === name) {
-						return {...field, isEdit: false};
-					} else {
-						return field;
-					}
-				})
-				return {id, fields}
 			} else {
 				return note;
 			}
