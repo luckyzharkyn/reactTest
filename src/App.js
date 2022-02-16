@@ -1,53 +1,76 @@
 import React, { useState } from "react";
 
 function App() {
-	function getReadyObj() {
-		return {
-			id: 4,
-			name: '',
-			catg: '',
-			cost: ''
-		}
-	}
-
 	const initProds = [
-		{id: 1, name: 'prod1', catg: 'catg1', cost: 100},
-		{id: 2, name: 'prod2', catg: 'catg2', cost: 200},
-		{id: 3, name: 'prod3', catg: 'catg3', cost: 300},
+		{
+			id: 1,
+			name: 'prod1',
+			cost: 'cost1',
+			desc: 'long description 1',
+			comm: 'my super comment 1',
+			descShow: false,
+			commShow: false
+		},
+		{
+			id: 2,
+			name: 'prod2',
+			cost: 'cost2',
+			desc: 'long description 2',
+			comm: 'my super comment 2',
+			descShow: false,
+			commShow: false
+		},
+		{
+			id: 3,
+			name: 'prod3',
+			cost: 'cost3',
+			desc: 'long description 3',
+			comm: 'my super comment 3',
+			descShow: false,
+			commShow: false
+		},
 	];
+
 	const [notes, setNotes] = useState(initProds);
-	const [obj, setObj] = useState(getReadyObj());
-	
+
 	const result = notes.map(note => {
-		return <tr key={note.id}>
-			<td>{note.name}</td>
-			<td>{note.catg}</td>
-			<td>{note.cost}</td>
-			<td><button onClick={(event) => remItem(note.id)}>delete this</button></td>
-		</tr>;
-	});
+		let descShow, commShow;
+		if(note.descShow) {
+			descShow = ", " + note.desc;
+		}
+		if(note.commShow) {
+			commShow = ", " + note.comm;
+		}
 
-	function remItem(id) {
-		setNotes(notes.filter(note => note.id !== id))
+
+		return <li key={note.id}>{note.name}, {note.cost} {descShow} {commShow} 
+		<button onClick={() => showDesc(note.id)}>{note.descShow ? "hideDesc" : "showDesc"}</button>
+		<button onClick={() => showComm(note.id)}>{note.commShow ? "hideComm" : "showComm"}</button>
+		</li>
+	})
+
+	function showDesc(id) {
+		setNotes(notes.map(note => {
+			if(note.id === id) {
+				return {...note, descShow: !note.descShow}
+			} else {
+				return note;
+			}
+		}))
 	}
 
-	function changeObj(propName, event) {
-		setObj({...obj, [propName]: event.target.value})
+	function showComm(id) {
+		setNotes(notes.map(note => {
+			if(note.id === id) {
+				return {...note, commShow: !note.commShow}
+			} else {
+				return note;
+			}
+		}))
 	}
-
-	function addItem() {
-		setNotes([...notes, obj])
-	}
-	
 	return <div>
-		<table><tbody>{result}</tbody></table>
-
-		<input value={obj.name} onChange={(event) => changeObj('name', event)} />
-		<input value={obj.catg} onChange={(event) => changeObj('catg', event)} />
-		<input value={obj.cost} onChange={(event) => changeObj('cost', event)} />
-		<button onClick={addItem}>add new obj</button>
-	</div>;
+		<ul>{result}</ul>
+	</div>
 }
-
 
 export default App;
